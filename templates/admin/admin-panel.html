@@ -1,0 +1,96 @@
+{%load static%}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="{%static 'images/icon.png'%}" type="image/gif" />
+  <link rel="stylesheet" href="{% static 'css/admin.css' %}">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css"
+    integrity="sha384-DyZ88mC6Up2uqS4h/KRgHuoeGwBcD4Ng9SiP4dIRy0EXTlnuz47vAwmeGwVChigm" crossorigin="anonymous" />
+  <title>Admin Panel</title>
+</head>
+
+<body>
+  <div class="container">
+    <div class="sidebar">
+      <ul>
+        <li>
+          <a href="/">
+            <i class="fas fa-home"></i>
+            <div class="title">R&R</div>
+          </a>
+        </li>
+        <li>
+          <a href="/dashboard">
+            <i class="fas fa-th-large"></i>
+            <div class="title active">Dashboard</div>
+          </a>
+        </li>
+        <li>
+          <a href="/product">
+            <i class="fas fa-th"></i>
+            <div class="title">Products</div>
+          </a>
+        </li>
+        <li>
+          <a href="/orders">
+            <i class="fas fa-shopping-cart"></i>
+            <div class="title">Orders</div>
+          </a>
+        </li>
+        <li>
+          <a href="/user">
+            <i class="fas fa-user"></i>
+            <div class="title">Customer</div>
+          </a>
+        </li>
+        <li>
+          <a href="/logout">
+            <i class="fas fa-sign-out-alt"></i>
+            <div class="title">Log-out</div>
+          </a>
+        </li>
+      </ul>
+    </div>
+    <div class="main">
+      <div class="top-bar">
+        <div class="search">
+          <input type="text" name="search" placeholder="Search here...">
+          <label for="search"><i class="fas fa-search"></i></label>
+        </div>
+        {% if request.user.is_superuser %}
+        <div class="user">
+          <span>
+            Hi,{{user.first_name}}
+            </span>
+        </div>
+        {%endif%}
+      </div>
+      <div class="cards">
+        <div class="card">
+          <div class="card-content">
+            <div class="number">{{user_count}}</div>
+            <div class="card-name">TOTAL USERS</div>
+          </div>
+          <div class="icon-box">
+            <i class="fas fa-list"></i>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-content">
+            <div class="number">{{order_count}}</div>
+            <div class="card-name">Total Orders</div>
+          </div>
+          <div class="icon-box">
+            <i class="fas fa-shopping-cart"></i>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</body>
+</html>

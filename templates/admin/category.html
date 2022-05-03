@@ -1,0 +1,121 @@
+{%load static%}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="{%static 'images/icon.png'%}" type="image/gif" />
+  <link rel="stylesheet" href="{%static 'css/manage.css' %}">
+  
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css"
+    integrity="sha384-DyZ88mC6Up2uqS4h/KRgHuoeGwBcD4Ng9SiP4dIRy0EXTlnuz47vAwmeGwVChigm" crossorigin="anonymous" />
+  <title>Manage Categories</title>
+</head>
+
+<body>
+  <div class="container">
+    <div class="sidebar">
+      <ul>
+        <li>
+          <a href="/home">
+            <i class="fas fa-home"></i>
+            <div class="title">R&R</div>
+          </a>
+        </li>
+        <li>
+          <a href="/dashboard">
+            <i class="fas fa-th-large"></i>
+            <div class="title active">Dashboard</div>
+          </a>
+        </li>
+        <li>
+          <a href="category/">
+            <i class="fas fa-list"></i>
+            <div class="title">Category</div>
+          </a>
+        </li>
+        <li>
+          <a href="/product">
+            <i class="fas fa-th"></i>
+            <div class="title">Products</div>
+          </a>
+        </li>
+        <li>
+          <a href="/order">
+            <i class="fas fa-shopping-cart"></i>
+            <div class="title">Orders</div>
+          </a>
+        </li>
+        <li>
+          <a href="/user">
+            <i class="fas fa-user"></i>
+            <div class="title">User</div>
+          </a>
+        </li>
+        <li>
+          <a href="/logout">
+            <i class="fas fa-sign-out-alt"></i>
+            <div class="title">Log-out</div>
+          </a>
+        </li>
+      </ul>
+    </div>
+    <div class="main">
+      <div class="top-bar">
+        <div class="search">
+          <input type="text" name="search" placeholder="Search here...">
+          <label for="search"><i class="fas fa-search"></i></label>
+        </div>
+        <i class="fas fa-bell"></i>
+        {% if request.user.is_superuser %}
+        <div class="user">
+          <span>
+            Hi,{{user.first_name}}
+            </span>
+        </div>
+        {%endif%}
+      </div>
+      <div class="tables">
+        <div class="manage">
+          <div class="heading">
+            <h2>Manage Category</h2>
+            <a href="/add-category" class="btn"> + Add Category</a>
+          </div>
+          <hr style="margin-top: 20px;color:#3aafa9;">
+          <h4 style="text-align:center;font-weight: bold;margin-top: 20px;">List of Category</h4>
+          <table class="category">
+            <thead>
+              <td>Category No.</td>
+              <td>Name</td>
+              <td>Actions</td>
+            </thead>
+            <tbody>
+              {% for cgys in categories %}
+              <tr>
+                <td>{{forloop.counter}}</td>
+                <td>{{cgys.category_name}}</td>
+                <td>
+                  <button style="background:#def2f1;border:none;padding:5px 10px;border-radius: 3px;">
+                    <a href="/edit/{{cgys.id}}"
+                      style="text-decoration:none;color: #17252a;font-size:16px;">Edit</a>
+                  </button>
+                </td>
+                <td>
+                  <button style="background:#17252A;border:none;padding:5px 10px;border-radius: 3px;">
+                    <a class="deletebtn" href="/delete/{{cgys.id}}"
+                      style="text-decoration:none;color: #feffff;;font-size:16px;">Delete</a>
+                  </button>
+                </td>
+              </tr>
+              {% endfor %}
+
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+</body>
+
+</html>
