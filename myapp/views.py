@@ -56,7 +56,6 @@ def attribute (request):
 
 
 
-@login_required (login_url= 'login')
 def about (request):
     return render (request,'myapp/about.html')
 
