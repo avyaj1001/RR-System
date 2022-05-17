@@ -7,8 +7,9 @@ from django.contrib.auth import authenticate
 from django.contrib import messages
 from accounts.decorators import unauthenticated_user,allowed_users, admin_only
 from django.contrib.auth.decorators import login_required
+from django.core.mail import send_mail
 from myapp.models import *
-from myapp.forms import *
+
 
 # Create your views here.
 
@@ -16,11 +17,32 @@ def index (request):
     products = Product.objects.all
     cat= Category.objects.all
     attribute = ProductAttribute.objects.all
-    
+
     catid=request.GET.get ('category')
     if catid:
         products = Product.objects.filter(category=catid)
+        
+    if request.method =='POST':
+        full_name = request.POST.get('full_name')
+        subject= request.POST.get('subject')
+        email= request.POST.get('email')
+        message=request.POST.get('message')
 
+        data = {
+                'full_name' : full_name,
+                'subject' : subject,
+                'email' : email,
+                'message' : message
+
+        }
+        message  = '''
+        New message: {}
+
+        From: {}
+        '''. format(data['message'], data ['email'])
+        send_mail(data['subject'], message, '', ['enanorjayva96@gmail.com'])
+
+        return redirect(request, 'contact/',{})
     else:
 
         products = Product.objects.all
@@ -59,27 +81,46 @@ def attribute (request):
 def about (request):
     return render (request,'myapp/about.html')
 
-@login_required (login_url= 'login')
-def cart (request):
-    return render (request,'myapp/cart.html')
 
 @login_required (login_url= 'login')
 def checkout (request):
+    neworder = Order()
+    neworder.user = request.user
+    neworder.first_name = request.POST.get('first_name')
+    neworder.last_name = request.POST.get('last_name')
+    neworder.email = request.POST.get('email')
+    neworder.phone = request.POST.get('phone')
+    neworder.address = request.POST.get('address')
+    neworder.country = request.POST.get('country')
+    neworder.city = request.POST.get('city')
+    neworder.zipcode = request.POST.get('zipcode')
+
+
+
     return render (request, 'myapp/checkout.html')
     
-@login_required (login_url= 'login')
 def Contact (request):
     if request.method =='POST':
-        full_name = request.POST['full_name']
-        phone_num= request.POST['phone_num']
-        email= request.POST['email']
-        message=request.POST['message']
-        contacts=contact (full_name = full_name, phone_num = phone_num, email = email,message = message)
-        contacts.save()
-        #messages.info(request,'Queries Added.')
-        return redirect('contact/')
-    else:  
-        return render(request, 'myapp/contact.html')
+        full_name = request.POST.get('full_name')
+        subject= request.POST.get('subject')
+        email= request.POST.get('email')
+        message=request.POST.get('message')
+
+        data = {
+                'full_name' : full_name,
+                'subject' : subject,
+                'email' : email,
+                'message' : message
+
+        }
+        message  = '''
+        New message: {}
+
+        From: {}
+        '''. format(data['message'], data ['email'])
+        send_mail(data['subject'], message, '', ['enanorjayva96@gmail.com'])
+
+    return render(request, 'myapp/contact.html',{})
 
 @login_required (login_url= 'login')
 @allowed_users
@@ -123,48 +164,8 @@ def dashboard(request):
     return render(request,'admin/admin-panel.html',context)
 
 
-#category
-#@login_required (login_url= 'login')
-#@admin_only
-#def category(request):
-    #categories= category.objects.all
-    #return render (request,'admin/category.html',{'categories': categories})
 
-@login_required (login_url= 'login')
-@admin_only
-def addcategory(request):
-    if request.method == 'POST':
-        category_name = request.POST['category_name']
-        categor=Category (category_name = category_name)
-        categor.save()
-        messages.info(request,'CATEGORY ADDED SUCCESSFULLY.')
-        return redirect('category')
-    else:  
-        return render(request, 'admin/add-category.html')
 
-@login_required (login_url= 'login')
-@admin_only
-def edit_category (request,id):
-    categories =Category.objects.get(id = id)
-    context = {'categories':categories}
-    return render (request,'admin/edit-category.html',context)
-
-@login_required (login_url= 'login')
-@admin_only
-def update_category (request,id):
-    categor =Category.objects.get(id = id)
-    categor.category_name = request.POST['category_name']
-    categor.save()
-    messages.info(request,'SAVE CHANGES')
-    return redirect ('/category')
-
-@login_required (login_url= 'login')
-@admin_only
-def delete_category(request,id):
-    categor =Category.objects.get(id = id)
-    categor.delete()
-    messages.info(request,'CATEGORY DELETED SUCCESSFULLY.')
-    return redirect ('/category')
 
 
 
@@ -268,6 +269,7 @@ def product(request):
 @admin_only
 def addproduct(request):
     p_category = Category.objects.all
+
     
     if request.method == 'POST':
         product_image = request.POST['product_image']

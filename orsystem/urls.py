@@ -26,6 +26,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     #path('admin/',views.dashboard, name="dashboard"),
     path('accounts/', include('accounts.urls')),
+    path('cart/', include('cart.urls')),
 
     #ADMIN PANEL
     path('dashboard/',views.dashboard, name="dashboard"),
@@ -59,9 +60,8 @@ urlpatterns = [
     #main
     path ('',views.index, name="index"),
     path ('about/',views.about, name="about"),
-    path ('contact/',views.contact, name="contact"),
+    path ('contact/',views.Contact, name="contact"),
     path ('checkout/',views.checkout, name="checkout"),
-    path ('cart/',views.cart, name="cart"),
 
 ] 
 if settings.DEBUG:

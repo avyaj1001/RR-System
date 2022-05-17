@@ -84,7 +84,16 @@
 
                         <label for="product_description">Description</label>
                         <input type="text" placeholder="Enter product description..." name="product_description"><br>
+                        
 
+                        <label for="product_type">Product Type: </label>
+                        <select name="product_type"  style="width: 100%;padding: 15px;margin: 5px 0 22px 0;display: inline-block;border: none;color:#17252A;background: #def2f1;" required>
+                            <option selected disabled>Select Product Type</option>
+                            {% for k in p_prodtype%}
+                            <option value="{{k.id}}">{{p.name}}</option>
+                            {%endfor%}
+                        </select>
+                        
                         <label for="category">Category: </label>
                         <select name="category"  style="width: 100%;padding: 15px;margin: 5px 0 22px 0;display: inline-block;border: none;color:#17252A;background: #def2f1;" required>
                             <option selected disabled>Select Category</option>

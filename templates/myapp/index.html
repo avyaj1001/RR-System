@@ -60,7 +60,7 @@
               </li>
           </div>
           <div class="quote_btn-container">
-            <a href="cart/">
+            <a href="cart/cart">
               <span>Cart</span>
             </a>
             {% if request.user.is_superuser %}
@@ -179,6 +179,7 @@
             </div>
             <div class="detail-box">
               <h5>{{product.product_name}}</h5>
+              <p class="text-muted">{{product.product_type}}</p>
               <p class="text-muted">{{product.category}}</p>
               <div class="price_box">
                 <h6 class="price_heading" >
@@ -205,6 +206,7 @@
                           <img src="{{product.product_image.url}}" alt="">
                         </div>
                         <hr>
+                        <p><strong>Type:</strong> {{product.product_type}}</p>
                         <p><strong>Category:</strong> {{product.category}}</p>
                         <p><strong>Description:</strong> {{product.product_description | truncatewords:50}}</p>
 
@@ -301,13 +303,13 @@
                 Contact Us
               </h2>
             </div>
-            <form action="contact/" method="POST">
+            <form action="" method="POST">
               {% csrf_token %}
               <div>
                 <input type="text" placeholder="Your Full Name" />
               </div>
               <div>
-                <input type="text" placeholder="Phone Number" />
+                <input type="text" placeholder="Subject" name="subject" />
               </div>
               <div>
                 <input type="email" placeholder="Email" />
